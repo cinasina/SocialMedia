@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2><span>Template License</span></h2>
+    {% for post in posts %}
+            <div class="clr"></div>
+            <p class="post-data"><span class="date">{{ post.created }}</span> &nbsp;|&nbsp; Posted by <a href="#">{{ post.user|capfirst }}</a> &nbsp;|&nbsp; Filed under <a href="#">templates</a>, <a href="#">internet</a></p>
+            <img src="{% static "images/images_1.jpg" %}" width="613" height="193" alt="" />
+            <p>{{ post.text }}</p>
+            {%  with comments=comments.all.count %}
+            <p class="spec"><a href="#" class="com fr">Comment{{ comments|pluralize }}({{ comments }})</a> <a href="{% url 'post:details' post.slug %}" class="rm fl">Read more</a></p>
+            {%  endwith %}
+    <div class="clr"></div>
+    {% endfor %}
+{% endblock %}

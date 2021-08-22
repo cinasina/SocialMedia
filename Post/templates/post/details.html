@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h2><span>Template License</span></h2>
+            <div class="clr"></div>
+            <p class="post-data"><span class="date">March 16, 2018</span> &nbsp;|&nbsp; Posted by <a href="#">Owner</a> &nbsp;|&nbsp; Filed under <a href="#">templates</a>, <a href="#">internet</a></p>
+            <p>{{ post.text }}</p>
+
+    {%  with comments=comments.all.count %}
+            <p class="spec"><a href="#" class="com fr">Comment{{ comments|pluralize }}({{ comments }})</a></p>
+    {%  endwith %}
+    <div class="clr"></div>
+
+    {% if liked %}
+        <h3><a href="{% url 'post:like:post_unlike' post.pk %}" style="background-color: brown">Unlike</a></h3>
+    {% else %}
+        <h3><a href="{% url 'post:like:post_like' post.pk %}" style="background-color: brown">Like</a></h3>
+    {% endif %}
+
+
+    <hr>
+    <h3 style="color: #97c950">Write Your Comment:</h3>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" style="background-color: cornflowerblue">
+    </form>
+    <br>
+
+   {% for cm in comments %}
+       <h3>{{ cm.user|capfirst }}</h3>
+       <p>{{ cm.text }}</p>
+
+       {% for reply in cm.reply.all %}
+           <h3 style="text-align: right">{{ reply.user }}</h3>
+           <p style="text-align: right">{{ reply.text }}</p>
+       {% endfor %}
+
+       <form action="{% url 'comment:add_reply' post.pk cm.pk %}" method="post" style="text-align: right">
+           {% csrf_token %}
+           {{ reply.as_p }}
+       <input type="submit" value="Add A Reply" style="background-color: blueviolet; text-align: right">
+       </form>
+       <hr>
+   {% endfor %}
+
+
+{% endblock %}

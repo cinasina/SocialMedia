@@ -1,0 +1,13 @@
+<div class="menu_nav">
+        <ul>
+          <li class="active"><a href="{% url 'home:home' %}">Home</a></li>
+          {% if request.user.is_authenticated %}
+              <li><a href="{% url 'accounts:profile:user_profile' request.user.id %}">Profile</a></li>
+              <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+          {% else %}
+              <li><a href="{% url 'accounts:login' %}">Sign In</a></li>
+              <li><a href="{% url 'accounts:register' %}">Sign Up</a></li>
+          {% endif %}
+        </ul>
+        <div class="clr"></div>
+</div>
